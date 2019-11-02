@@ -25,10 +25,19 @@ const posts = [
 
 
 function createPost(post, callback) {
-  setTimeout(function() {
-    posts.push(post)
-    callback()
-  }, 2000)
+  return new Promise(function(resolve, reject) {
+    setTimeout(function() {
+      posts.push(post)
+      const error = true
+
+      if(!error) {
+        resolve()
+      } else {
+        reject('Error: Something went wrong')
+      }
+
+    }, 2000)
+  })
 }
 
 function getPosts() {
@@ -41,4 +50,8 @@ function getPosts() {
   }, 1000)
 }
 
-createPost({title: 'Post three', body: 'This is post three'}, getPosts)
+createPost({title: 'Post three', body: 'This is post three'})
+.then(getPosts)
+.catch(function(err) {
+  console.log(err);
+} )
